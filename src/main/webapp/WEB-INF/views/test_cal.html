@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<head>
+    <title>Mall</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/airbnb.css">
+<body>
+
+<div>
+    <h3> 지정된 날짜 사이만 선택이 가능한 달력</h3>
+    <input type="text" id="limitDay" placeholder="날짜 및 시간 선택">
+</div>
+
+<div style="margin-top:500px;">
+    <h3> 계속 활성화되어 있고, 날짜를 확인할 수 있는 칸은 다른 칸에서 출력하기</h3>
+    <input type="hidden" id="activeCal" disabled>
+    <input type="text" id="otherInput" value="" placeholder="날짜를 선택해주세요">
+</div>
+
+
+<div style="margin-top:50px;">
+    <h3> 시작일 ~ 종료일 지정하는 달력</h3>
+    기간 : <input type="text" id="between_day" placeholder="기간">
+    기간 : <input type="text" id="first_day" placeholder="시작 날짜">
+    기간 : <input type="text" id="last_day" placeholder="끝 날짜">
+</div>
+<!-- 조건 1 : 1년까지 지정 가능(외 비활성화)-->
+<!-- 조건 2 : 시작일, 마지막날 split 해서 input(type:hidden)에 넣기-->
+
+
+<div style="margin-top:500px;">
+    <h3> 특정날짜(List) 비활성화 하는 달력 </h3>
+    비활성화 : <input type="text" id="nonActiveDay" placeholder="가능한 날짜">
+</div>
+
+<div style="margin-top:500px;">
+    <h3> 특정날짜(List) 활성화 하는 달력 </h3>
+    활성화 : <input type="text" id="activeDay" placeholder="가능한 날짜">
+</div>
+
+<script>
+    let limitDay = document.getElementById('limitDay');
+    let activeCal = document.getElementById('activeCal');
+    let BetweenDay = document.getElementById('between_day');
+    let firstDay = document.getElementById('first_day');
+    let lastDay = document.getElementById('last_day');
+    let nonActiveDay = document.getElementById('nonActiveDay');
+    let otherInput = document.querySelector("#otherInput");
+    let activeDay = document.querySelector("#activeDay");
+
+    flatpickr(limitDay, {
+        minDate: '2023-12-10', // 지정 가능한 최소 날짜
+        maxDate: '2023-12-31',  // 지정 가능한 최대 날짜
+        locale: 'ko',            // 한국어로 달력 출력
+    });
+
+    flatpickr(activeCal, {
+        minDate: '2023-12-21',  // 지정 가능한 최소 날짜
+        maxDate: '2023-12-28',  // 지정 가능한 최대 날짜
+        locale: 'ko',           // 한국어로 달력 출력
+        inline: true,           // 항상 달력 활성화
+        onChange: function(selectedDates, dateStr, instance) {
+            otherInput.value = dateStr;
+            console.log('selectedDates 날짜:', selectedDates);
+            // [Thu Dec 21 2023 00:00:00 GMT+0900 (한국 표준시)]
+            console.log('dateStr 날짜:', dateStr);
+            // 2023-12-21
+            console.log('instance 날짜:', instance);
+            // 리스트
+        },
+    });
+
+    // function click(){
+    //     // 특정날짜가 기간이라면
+    //     let StringValue = '2023-11-01~2023-11-03';
+    //     let targetword = "~";
+    //
+    //     if(StringValue.includes(targetword)){
+    //         let firstDay = StringValue.split("~")[0];
+    //         let lastDay = StringValue.split("~")[1];
+    //         console.log(firstDay); // 2023-11-01
+    //         console.log(lastDay);  // 2023-11-03
+    //     }
+    // }
+
+    flatpickr(activeDay, {
+        onReady: function(selectedDates, dateStr, instance) {
+            let stringValues = ['2023-11-01', '2023-11-02', '2023-11-03', '2023-11-04'];
+            // 선택 가능한 날짜 데이터를 받아온다는 가정
+
+            let firstDay = stringValues[0];
+            let lastDay = stringValues[stringValues.length-1];
+
+            firstDay = new Date(firstDay + 'T00:00:00').toISOString();
+            lastDay = new Date(lastDay + 'T00:00:00').toISOString();
+            // String인 날짜에는 Date 타입으로 변경하며 현재 시간까지 적용되어 시작날짜가 빠질 수 있다.
+            // 그래서 T00:00:00를 더해서 시간을 00:00:00으로 만들어 현재 시간까지 적용되게 한다.
+
+            instance.set("from", firstDay);
+            instance.set("to", lastDay);
+
+            // enable 옵션에 함수 전달
+            instance.set("enable", [
+                function(date) {
+                    return date >= new Date(firstDay) && date <= new Date(lastDay);
+                    // firstDay, lastDay가 지정된 날짜 속에 있다면 enable이 가능하도록 한다.
+                }
+            ]);
+
+        },
+        inline: true,
+        locale: 'ko',
+    });
+
+
+    flatpickr(BetweenDay, {
+        mode: "range",
+        minDate: "today",
+        maxDate: new Date().setFullYear(new Date().getFullYear() + 1),  // 현재 날짜에 + 1년까지 활성화
+
+        // 시작일, 종료일 나누기
+        onChange: function(selectedDates, dateStr, instance) {
+            // 날짜가 변경될 때 실행할 코드
+            let targetWord = " to ";
+            let splitFirstDay = dateStr.split(targetWord)[0];
+            let splitLastDay = dateStr.split(targetWord)[1];
+
+            //
+            firstDay.value = splitFirstDay;
+            lastDay.value = splitLastDay;
+        },
+    });
+
+    flatpickr(nonActiveDay, {
+        onReady: function(selectedDates, dateStr, instance) {
+            let stringValues = ['2023-11-01', '2023-11-03', '2023-11-05'];
+            let disable = [];
+
+            stringValues.forEach(function(value) {
+                // disable에 배열로 전달
+                disable.push(value);
+            });
+
+            instance.set("disable", disable);
+            console.log(disable);
+        },
+        inline: true,
+        locale: 'ko',
+    });
+
+
+    // flatpickr(datepicker, {
+    //     dateFormat: 'Y-m-d H:i', // 날짜 및 시간 형식 설정 (예: 2023-09-12 15:30)
+    //     enableTime: true,        // 시간 선택 활성화
+    //     time_24hr: true,         // 24시간 형식 사용
+    //     minDate: 'today',        // 오늘 이전 날짜 선택 비활성화
+    //     maxDate: '2023-12-31',   // 특정 날짜까지 선택 가능
+    //     defaultDate: 'today',    // 초기 날짜 설정 (현재 날짜와 시간)
+    //     disable: ['2023-10-01', '2023-10-10'], // 특정 날짜 비활성화
+    //     enable: [{
+    //         from: "2025-04-01",
+    //         to: "2025-05-01"
+    //     },
+    //         {
+    //             from: "2025-09-01",
+    //             to: "2025-12-01"
+    //         }], // 특정 날짜 활성화
+    //     locale: 'ko',            // 한국어로 지역화
+    //     onOpen: function(selectedDates, dateStr, instance) {
+    //         // 위젯이 열릴 때 실행할 코드
+    //     },
+    //     onClose: function(selectedDates, dateStr, instance) {
+    //         // 위젯이 닫힐 때 실행할 코드
+    //     },
+    //     onChange: function(selectedDates, dateStr, instance) {
+    //         // 날짜가 변경될 때 실행할 코드
+    //     },
+    //     onReady: function(selectedDates, dateStr, instance) {
+    //         // 위젯이 열려 있을 때 실행할 코드
+    //     },
+    //     disableMobile: true,      // 모바일 기기에서 위젯 비활성화
+    //     altInput: true,           // 추가 입력란 활성화
+    //     altFormat: 'F j, Y H:i', // 추가 입력란의 날짜 및 시간 형식
+    // });
+    //
+    // flatpickr(datepicker2, {
+    //     dateFormat: 'Y-m-d', // 날짜 형식 설정 (예: 2023-09-12)
+    //     enableTime: false,   // 시간 선택 비활성화
+    //     // minDate: 'today',    // 오늘 이전 날짜 선택 비활성화
+    //     // defaultDate: new Date() // 초기 날짜 설정 (현재 날짜로 설정)
+    //     inline: true
+    //
+    // });
+    // flatpickr(startDateInput, {
+    //     dateFormat: 'Y-m-d',
+    //     enableTime: false,
+    //     minDate: 'today',
+    //     defaultDate: 'today',
+    //     locale: 'ko',
+    //     onChange: handleDateChange, // 날짜 선택 이벤트 핸들러 등록
+    // });
+    //
+    // flatpickr(endDateInput, {
+    //     dateFormat: 'Y-m-d',
+    //     enableTime: false,
+    //     minDate: 'today',
+    //     defaultDate: 'today',
+    //     locale: 'ko',
+    //     onChange: handleDateChange, // 날짜 선택 이벤트 핸들러 등록
+    // });
+</script>
