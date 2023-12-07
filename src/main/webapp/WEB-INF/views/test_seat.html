@@ -1,0 +1,104 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <style>
+        .seat {
+            width: 30px;
+            height: 30px;
+        }
+        /* div 크기*/
+
+        .clicked {
+            background-color: red;
+            color: white;
+        }
+        /*클릭 시 div 변경*/
+    </style>
+</head>
+
+<body>
+<div class="seat-wrapper"></div>
+<!--해당 div-->
+</body>
+<script>
+    let test = [];
+    let selectedSeats = new Array();
+    let selectedSeatsMap = [];
+    const seatWrapper = document.querySelector(".seat-wrapper"); // 해당 자리를 변경할 예정
+    let clicked = "";
+    let div = "";
+
+    for (let i = 0; i < 7; i++) {
+        div = document.createElement("div"); // div를 생성할 것
+        seatWrapper.append(div); // seat-wrapper에 자리를 추가할 것
+        for (let j = 0; j < 7; j++) {
+            const input = document.createElement('input'); // 각 div마다 input이라는 태그를 만들 것
+            input.type = "button"; // 타입은 버튼
+            input.name = "seats" // 이름은 자리
+            input.classList = "seat"; // input 속성을 seat로 줘서 모든 seat에 해당하는 input을 관리할 수 있다
+            //3중포문을 사용하지 않기위해
+            mapping(input, i, j); // i = 1, j = 7(고정)
+            div.append(input); // input 태그를 div 안에 구현
+
+            // input 태그(자리) 클릭 시
+            input.addEventListener('click', function(e) {
+                console.log(e.target.value);
+                //중복방지 함수(클릭한 자리 번호가 중복이 없도록) -> 여기에 들어오면 색이 변하게 하면 될 듯
+                selectedSeats = selectedSeats.filter((element, index) => selectedSeats.indexOf(element) != index);
+                // array.indexOf(searchElement[, fromIndex]) -> searchElement: 찾고자 하는 요소 / fromIndex (선택사항)
+
+                console.log("input" + input.value);
+
+                // 자리를 클릭하면 class명이 "seat clicked"되도록 구현했다.
+                // 자리를 다시 클릭(해제)하면 class명이 'seat"가 되도록 구현한다.
+
+                //click class가 존재할때(제거해주는 toggle)
+                if (input.classList.contains("clicked")) {
+                    // contains(클래스) -> classList에 "clicked"가 포함되었는 지 확인하는 메소드
+                    input.classList.remove("clicked"); // 클릭된 클래스 이름에 clicked를 제거
+                    clicked = document.querySelectorAll(".clicked"); // 남은 자리의 div 모두 선택
+                    selectedSeats.splice(selectedSeats.indexOf(e.target.value), 1);
+                    // splice -> selectedSeats 배열에서 삭제, e.target.value는 해당 클릭된 input 값, 1개 삭제
+                    clicked.forEach((data) => {
+                        selectedSeats.push(data.value);
+                    });
+                    // 제거가 된 clicked를 다시 selectedSeats에 push
+
+                    //click class가 존재하지 않을때 (추가해주는 toggle)
+                } else {
+                    input.classList.add("clicked"); // 선택된 자리 클릭
+                    clicked = document.querySelectorAll(".clicked"); // clicekd가 들어간 div 모두 선택
+                    clicked.forEach((data) => {
+                        selectedSeats.push(data.value);
+                    })
+                    // 추가된 clicked를 다시 배열에 추가
+                }
+                console.log(selectedSeats);
+            })
+        }
+    }
+
+    function mapping(input, i, j) {
+        if (i === 0) {
+            input.value = "A" + j;
+        } else if (i === 1) {
+            input.value = "B" + j;
+        } else if (i === 2) {
+            input.value = "C" + j;
+        } else if (i === 3) {
+            input.value = "D" + j;
+        } else if (i === 4) {
+            input.value = "E" + j;
+        } else if (i === 5) {
+            input.value = "F" + j;
+        } else if (i === 6) {
+            input.value = "G" + j;
+        }
+    }
+</script>
+
+</html>
