@@ -45,4 +45,8 @@ public class TestController {
         return "pay/cart";
     }
 
+    @GetMapping("/select-seat")
+    public String selectSeat(){
+        return "reservation/select_seat";
+    }
 }

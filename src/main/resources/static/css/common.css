@@ -1,0 +1,35 @@
+@import url(reset.css);
+
+:root {
+    --primary_01: #4BE2A7;
+    --primary_02: #8AF9CD;
+    --point_01: #D9FFF0;
+    --point_02: #8D48FF;
+    --point_03: #E2D0FF;
+    --point_04: #ea6161;
+    --point_05: #28d1b3;
+    --line_01: #dcdcdc;
+    --font_01: #333;
+    --font_02: #9f9f9f;
+    --font_03: #7f7f7f;
+    --back_01: #f7f7f7;
+    --back_02: #efefef;
+    --def_wh: #fff;
+    --def_bl: #000;
+}
+
+main {
+    justify-content: center;
+    padding: 100px 20px 200px;
+    height: 100%;
+    margin: 30px 0;
+}
+
+li {
+    list-style: none;
+}
+a {
+    text-decoration: none;
+    color: #000;
+}
+
