@@ -116,7 +116,7 @@
         // 총 관람 좌석 수
         let allSeatCount = 124;
         // 이미 예약이 완료된 좌석 수
-        let existSeatCount = 123;
+        let existSeatCount = document.querySelector("#n_exist_seat_list") ? document.querySelector("#n_exist_seat_list").value : 0;
         // 제한 숫자
         let limitNumber;
 
