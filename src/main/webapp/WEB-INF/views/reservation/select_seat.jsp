@@ -80,13 +80,17 @@
                         </div>
                     </div>
                     <div>
-                        <div class="n_select_seat_wrapper"></div>
+                        <div class="n_select_seat_wrapper">
+                            <input type="hidden" id="n_clicked_seat_list" name="" value="">
+                            <input type="hidden" id="n_exist_seat_list" name="" value="">
+                            <input type="hidden" id="n_selected_seat_data" name="" value="">
+                        </div>
                     </div>
                 </div>
                 <form>
                     <button type="submit" id="n_payment_button">
                         <div class="n_last_price">
-                            <span class="n_last_price" id="n_last_count"><p id="n_count">0</p><p>인</p></span>
+                            <span class="n_last_price" id="n_last_count"><p id="n_person_count">0</p><p>인</p></span>
                             <span class="n_last_price" id="last_price"><p>총</p><p id="n_price">0</p><p>원</p></span>
                         </div>
                     </button>
@@ -105,6 +109,24 @@
         let plusButton = document.querySelector("#n_plus_button");
         let count = document.querySelector(".n_count");
         let number = count.innerHTML; // 0
+        let clickedList = document.querySelector("#n_clicked_seat_list");
+
+
+
+        // 총 관람 좌석 수
+        let allSeatCount = 124;
+        // 이미 예약이 완료된 좌석 수
+        let existSeatCount = 123;
+        // 제한 숫자
+        let limitNumber;
+
+
+        if(118 <= existSeatCount && existSeatCount <= 124){
+            limitNumber = allSeatCount - existSeatCount - 1;
+
+        }else if(existSeatCount < 118){
+            limitNumber = 5;
+        }
 
         if(type == "plus"){
             number = parseInt(number) + 1;
@@ -118,15 +140,21 @@
             minusButton.disabled = false;
         }
 
-        if(5 < number){
+        if(limitNumber < number){
             plusButton.disabled = true;
         }else {
             plusButton.disabled = false;
         }
-        // 계산 끝난 number를 count.innerHTML에 지정하기
+
+        if(number < clickedList.value){
+          alert("선택한 좌석 먼저 해제해주세요.");
+          return;
+        }
+
+
         count.innerHTML = number;
-        console.log("number : " + number);
     }
+
 
     // 좌석 선택하기
     ///////////////////////////////////////////////////////////////
@@ -136,12 +164,15 @@
     let exist = ""; // 이미 선택된 자리가 있는 div를 담는 함수
     let clicked = ""; // 선택한 자리가 있는 div를 담는 함수
     let div = ""; // 추가할 tag
-
-    let selectedSeatsData = ['A1', 'A2', 'A3', 'C5'];
+    let Data = document.querySelector("#n_selected_seat_data"); // 이미 예약이 완료된 좌석
+    let selectedSeatsData = [];
+    //TODO 은혜: 나중에 Data는 배열이므로, selectedSeatsData로 바꾸기
 
     // 페이지 로딩 시 아래의 함수 실행
     window.onload = function (){
-        selectedSeat();
+        if(selectedSeatsData != null){
+            selectedSeat();
+        }
     };
 
     for(let i = 0; i < 10; i++) {
@@ -159,16 +190,16 @@
             div.append(input);
 
             input.addEventListener("click", function (e) {
-                // 관람인원만큼 선택 가능하기
-                let wantCount = parseInt(document.querySelector(".n_count").innerHTML, 10);
-                console.log("관람인원 수: " + wantCount);
-                console.log("선택한 사람 수: " + clickedSeats.length);
+                let wantCount = parseInt(document.querySelector(".n_count").innerHTML);
+                let clickedList = document.querySelector("#n_clicked_seat_list");
 
-                // 선택한 자리가 이미 wantCount개인 경우 추가 선택 방지
-                <%--if (clickedSeats.length >= wantCount) {--%>
-                <%--    console.log(`이미 ${wantCount}개의 자리를 선택하셨습니다.`);--%>
-                <%--    return;--%>
-                <%--}--%>
+                // 관람인원에 따른 코드 실행
+                if(wantCount == 0) {
+                    alert("관람인원을 선택해주세요");
+                    clickedSeats == [];
+                }else{
+                // 중복으로 선택되는 것을 방지
+                clickedSeats = clickedSeats.filter((select, seats) => clickedSeats.indexOf(select) !== seats);
 
                 // 선택이 된 좌석을 클릭 시 삭제
                 if (input.classList.contains("n_clicked")) {
@@ -178,26 +209,40 @@
                         clickedSeats.push(select.value);
                     });
                     console.log("선택한 자리: " + clickedSeats);
+                    clickedList.value = clickedSeats.length;
                     lastSelectedSeat();
                     sumPrice();
                 }
                 // 좌석 선택하기
                 else {
-                    input.classList.add("n_clicked");
-                    clicked = document.querySelectorAll(".n_clicked");
-                    clicked.forEach(select => {
-                        clickedSeats.push(select.value);
-                    });
-                    console.log("선택한 자리: " + clickedSeats);
-                    lastSelectedSeat();
-                    sumPrice();
-                }
+                    let seatNumber;
 
-                // 중복으로 선택되는 것을 방지
-                clickedSeats = clickedSeats.filter((select, seats) => clickedSeats.indexOf(select) !== seats);
+                    if (isNaN(parseInt(clickedList.value))) {
+                        seatNumber = 1;
+                    } else {
+                        seatNumber = parseInt(clickedList.value) + 1;
+                    }
+
+                    if (seatNumber > wantCount) {
+                        alert("이미 " + wantCount + "개의 자리를 선택하셨습니다.");
+                        return;
+
+                    }else{
+                        input.classList.add("n_clicked");
+                        clicked = document.querySelectorAll(".n_clicked");
+                        clicked.forEach(select => {
+                            clickedSeats.push(select.value);
+                        });
+                        clickedList.value = clickedSeats.length;
+                        lastSelectedSeat();
+                        sumPrice();
+                        }
+                    }
+                }
             })
         }
     }
+
 
     // 선택한 좌석 목록보기
     ///////////////////////////////////////////////////////////////
@@ -222,13 +267,12 @@
     }
 
     // 선택이 불가능한 좌석
-    function selectedSeat(){
-        //for문 돌면서 찾기
+    function selectedSeat() {
         selectedSeatsData.forEach(existSeat => {
-            exist = document.querySelector("input[value='"+ existSeat +"']");
+            exist = document.querySelector("input[value='" + existSeat + "']");
             existSeats.push(exist);
         })
-        if(existSeats != null){
+        if (existSeats != null) {
             existSeats.forEach(input => {
                 input.classList.add("n_exist");
                 input.disabled = true;
@@ -237,9 +281,11 @@
         }
         console.log("선택 불가능한 자리 : " + selectedSeatsData);
     }
+
+
     // 좌석 총 인원 수와 결제 금액
     ///////////////////////////////////////////////////////////////
-    let ticketCount = document.querySelector("#n_count");
+    let ticketCount = document.querySelector("#n_person_count");
     let totalTicketPrice = document.querySelector("#n_price");
     let ticketPrice = 8000;
 
@@ -259,21 +305,21 @@
     }
 
 
-    // 선택한 좌석 목록 만들기
+    // 선택한 좌석 목록 만들기 + 인원 등록
+    //////////////////////////////////////////////////////////////
     function lastSelectedSeat(){
          if(clickedSeats != null){
+             // 선택한 좌석 인원 등록
              let clickedCount = clickedSeats.length.toString();
              ticketCount.innerHTML = clickedCount;
-             console.log("티켓카운터 : " + ticketCount.innerHTML);
-             // 만들어 놓은 lastSeat input 태그 가져오기
+
+             // 선택한 좌석 목록 만들기
              lastClicked = document.querySelectorAll(".n_last_seat");
 
-             // input 태그 6개를 String으로 받는 다음, arraylist에 넣기
              lastClicked.forEach(clickedSeat => {
                  lastClickedSeats.push(clickedSeat);
              })
 
-             // input 태그 속 value가 있다면 ""로 초기화를 먼저 하고 classList 변경하기
              if(lastClickedSeats.values() != null){
                  lastClickedSeats.forEach(cliecked => {
                      cliecked.value = "";
@@ -281,16 +327,26 @@
                  })
              }
 
-             // 클릭되는 갯수에 따라 forEach 돌면서 input 태그 arraylist에 담기
              clickedSeats.forEach((selectedSeatNumber, index) => {
                  lastClickedSeats[index].classList = "n_last";
                  lastClickedSeats[index].value = selectedSeatNumber;
-                 console.log("lastSeat.value : " + lastClickedSeats[index].classList);
              })
          }
     }
 
+    // 결제금액이 0일 때 결제 막기
+    let paymentButton = document.querySelector("#n_payment_button");
+    let totalPrice = document.querySelector("#n_price");
+    paymentButton.addEventListener("click", function (){
+        console.log("total + " + totalTicketPrice);
+        if(parseInt(totalPrice.innerHTML) == 0){
+            alert("결제할 금액이 없습니다.");
+        }
+    });
+
+
     // 영화관 좌석 value 지정하기
+    ////////////////////////////////////////////////////////////
     function mapping(input, i, j) {
         if (i == 0) {
             input.value = "A" + j;
