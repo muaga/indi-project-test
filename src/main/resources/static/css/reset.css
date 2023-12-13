@@ -4,7 +4,7 @@
     font-family: 'Noto Sans KR';
     font-style: normal;
     font-weight: 400;
-    src: url('../fonts/noto-sans-kr-v36-korean-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    /*src: url('../fonts/noto-sans-kr-v36-korean-regular.woff2') format('woff2'); !* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ *!*/
 }
 
 html, body, div, span, applet, object, iframe,

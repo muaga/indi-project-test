@@ -16,6 +16,13 @@ spring:
     username: sa
     password:
 
+  sql:
+    init:
+      schema-locations:
+        - classpath:db/table.sql
+      data-locations:
+        - classpath:db/data.sql
+
   h2:
     console:
       enabled: true
@@ -23,3 +30,7 @@ spring:
       ansi:
         enabled: always
 
+# iamPort
+imp.code: imp81816223
+imp.rest-api.key: "5064237412678407"
+imp.rest-api.secret-key: k4MtJ9y69ErPEGGhWQdE41KIFktLgp9uzgGXE8XMVUL0F4kZKzmCE7p8fsv0G8L2UDs5iLW3LYXdNUrE

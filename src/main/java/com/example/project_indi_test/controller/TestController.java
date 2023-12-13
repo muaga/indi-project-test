@@ -13,6 +13,11 @@ public class TestController {
 
     @GetMapping("/select-movie-day")
     public String selectMovieDay(){
+
+        System.out.println("==================================");
+        System.out.println("카카오페이 결제 완료");
+        System.out.println("==================================");
+
         return "pay/select_movie_day";
     }
 
