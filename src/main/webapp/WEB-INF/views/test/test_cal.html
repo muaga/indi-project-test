@@ -41,6 +41,11 @@
     활성화 : <input type="text" id="activeDay" placeholder="가능한 날짜">
 </div>
 
+<div style="margin-top:500px;">
+    <h3> 시간 받기 => 15:30 </h3>
+    활성화 : <input type="text" id="time" placeholder="선택한 시간">
+</div>
+
 <script>
     let limitDay = document.getElementById('limitDay');
     let activeCal = document.getElementById('activeCal');
@@ -50,6 +55,13 @@
     let nonActiveDay = document.getElementById('nonActiveDay');
     let otherInput = document.querySelector("#otherInput");
     let activeDay = document.querySelector("#activeDay");
+    let time = document.querySelector("#time");
+
+    flatpickr(time, {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+    });
 
     flatpickr(limitDay, {
         minDate: '2023-12-10', // 지정 가능한 최소 날짜
