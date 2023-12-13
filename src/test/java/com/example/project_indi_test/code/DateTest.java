@@ -13,7 +13,7 @@ import java.util.List;
 public class DateTest {
 
     @Test
-    public static void main(String[] args) {
+    public void date_test () {
         String startDateString = "2023-12-25";
         String endDateString = "2024-01-02";
 
