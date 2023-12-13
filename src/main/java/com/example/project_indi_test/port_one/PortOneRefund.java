@@ -22,11 +22,7 @@ public class PortOneRefund {
     @Value("${imp.rest-api.secret-key}")
     private String secretKey;
 
-    private String token = "35370e053432f24e9f016142c2fa6368418108c4";
-
-    private String impUid = "imp81816223";
-
-
+    // 환불요청하는 메소드
     // http://localhost:8080/wantRefund
     @PostMapping("/wantRefund")
     @ResponseBody
@@ -43,7 +39,7 @@ public class PortOneRefund {
             // 헤더 구성
             HttpHeaders headers1 = new HttpHeaders();
             headers1.add("Content-Type", "application/json;charset=UTF-8");
-            headers1.add("Authorization", token);
+            headers1.add("Authorization", "token"); // 토큰 들어가야 함
 
             // 바디 구성
             HashMap<String, String> params1 = new HashMap<>();

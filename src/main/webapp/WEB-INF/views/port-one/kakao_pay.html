@@ -18,7 +18,7 @@
     </style>
 <body>
 <!-- 결제하기 버튼 생성 -->
-<button onclick="requestKakaoPay()">결제하기</button>
+<button onclick="KakaoPay()">결제하기</button>
 
 <!-- 환불하기 버튼 생성 -->
 <button onclick="cancelPay()">환불하기</button>
@@ -30,7 +30,7 @@
     IMP.init('imp81816223') // 예: 'imp00000000a'
 
     // 카카오 페이 결제 요청
-    function requestKakaoPay() {
+    function KakaoPay() {
         IMP.request_pay({
             pg: "kakaopay.TC0ONETIME", // 상점CID
             pay_method: "card", // 생략가

@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 
+// 토큰 받는 메소드
 @Controller
 public class PortOneToken {
 
