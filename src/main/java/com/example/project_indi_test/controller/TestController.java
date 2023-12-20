@@ -1,7 +1,9 @@
 package com.example.project_indi_test.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class TestController {
@@ -54,4 +56,13 @@ public class TestController {
     public String selectSeat(){
         return "reservation/select_seat";
     }
+////////////////////////////////////////////////////////////////////////////////////
+
+    // 온라인 결제 화면 요청(GET)
+    @GetMapping("/{movieId}/on")
+    public String onPayment(@PathVariable Integer movieId, Model model){
+        return "payment/on_payment";
+    }
+
 }
+
