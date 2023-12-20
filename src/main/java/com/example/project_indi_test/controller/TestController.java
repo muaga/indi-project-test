@@ -1,14 +1,37 @@
 package com.example.project_indi_test.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class TestController {
 
     @GetMapping("/")
-    public String test(){
-        return "test";
+    public String test(Model model){
+        Test test1 = Test.builder()
+                .username("ssar")
+                .password("1234")
+                .build();
+        Test test2 = Test.builder()
+                .username("cos")
+                .password("1234")
+                .build();
+
+        List<Test> tests = new ArrayList<>();
+        tests.add(test1);
+        tests.add(test2);
+
+        TestDTO testDTO = TestDTO.builder()
+                .tests(tests)
+                .build();
+
+        model.addAttribute("testDTO", testDTO);
+
+        return "test/test";
     }
 
     @GetMapping("/select-movie-day")

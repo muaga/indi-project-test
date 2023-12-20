@@ -15,6 +15,12 @@
 </div>
 
 <div style="margin-top:500px;">
+    <h3>원하는 날짜와 시간을 받는 달력</h3>
+    <input type="text" id="choiceDay" placeholder="날짜 및 시간 선택">
+</div>
+
+
+<div style="margin-top:500px;">
     <h3> 계속 활성화되어 있고, 날짜를 확인할 수 있는 칸은 다른 칸에서 출력하기</h3>
     <input type="hidden" id="activeCal" disabled>
     <input type="text" id="otherInput" value="" placeholder="날짜를 선택해주세요">
@@ -48,6 +54,7 @@
 
 <script>
     let limitDay = document.getElementById('limitDay');
+    let choiceDay = document.getElementById('choiceDay');
     let activeCal = document.getElementById('activeCal');
     let BetweenDay = document.getElementById('between_day');
     let firstDay = document.getElementById('first_day');
@@ -67,6 +74,11 @@
         minDate: '2023-12-10', // 지정 가능한 최소 날짜
         maxDate: '2023-12-31',  // 지정 가능한 최대 날짜
         locale: 'ko',            // 한국어로 달력 출력
+    });
+
+    flatpickr(choiceDay, {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
     });
 
     flatpickr(activeCal, {

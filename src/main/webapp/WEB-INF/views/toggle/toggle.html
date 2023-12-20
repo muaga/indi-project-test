@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<style>
+    .tab-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-column-gap: 20px;
+    }
+
+    .tab {
+        background-color: #f1f1f1;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.show {
+        display: block;
+    }
+</style>
+
+</head>
+
+<body>
+<div class="tab-container">
+    <button class="tab" id="tab1">Tab 1</button>
+    <button class="tab" id="tab2">Tab 2</button>
+    <button class="tab" id="tab3">Tab 3</button>
+
+    <div class="tab-content" id="content1">
+        <p>Tab 1 Content</p>
+    </div>
+    <div class="tab-content" id="content2">
+        <p>Tab 2 Content</p>
+    </div>
+    <div class="tab-content" id="content3">
+        <p>Tab 3 Content</p>
+    </div>
+</div>
+<script>
+    // 모든 Tab 버튼 가져오기
+    const tabs = document.querySelectorAll('.tab');
+    // 모든 Tab-content 가져오기
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    // Tab 버튼을 순회
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // 선택된 탭에 대한 스타일 변경
+            // 특정 버튼을 클릭하면 나머지 버튼의 active를 삭제
+            tabs.forEach(tab => tab.classList.remove('active'));
+            tab.classList.add('active');
+
+            // 선택된 탭 내용 표시
+            // tab의 id에 tab -> content로 변경하면 id=content1을 찾는다.
+            const tabId = tab.getAttribute('id').replace('tab', 'content');
+            tabContents.forEach(content => content.classList.remove('show'));
+            document.getElementById(tabId).classList.add('show');
+        });
+    });
+</script>
+</body>
+</html>
