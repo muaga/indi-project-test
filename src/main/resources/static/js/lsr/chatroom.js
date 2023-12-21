@@ -8,25 +8,30 @@ const userId = document.getElementById('userId').value;
 
 // 메세지 보내는 버튼
 const sendMessageButtons = document.querySelectorAll('.l_send_message_button');
-console.log("버튼 수 : " + sendMessageButtons.length);
 
-// 해당 채팅 버튼을 클릭 시 채팅 내용 뜨기
 
 // 채팅방 버튼
 const chatButtons = document.querySelectorAll('.l_channel_card_button');
+
+// 해당 채팅 버튼을 클릭 시 채팅 내용 뜨기
 chatButtons.forEach((chatButton) => {
     chatButton.addEventListener('click', ()=> {
-        console.log("해당 버튼 : " + chatButton.id);
         const number = chatButton.getAttribute('id').replace('movie', ''); // 1
 
         let chatMessagesContainer = document.getElementById(`chatMessages` + number);
         let movieTitle = document.getElementById(`movieTitle` + number).value;
+
+        // 채팅방 초기화
+        chatMessagesContainer.innerHTML = "";
+        // 리스너 호출
         snapshotListener(chatMessagesContainer, movieTitle);
 
         // 화면 높이 가져와서 채팅방에 설정하기
         const windowHeight = window.innerHeight;
-        const chatContainer = document.querySelector(".l_chat_message_box");
-        chatContainer.style.height = `${windowHeight}px`;
+        const chatContainers = document.querySelectorAll(".l_chat_message_box");
+        chatContainers.forEach(chatContainer => {
+            chatContainer.style.height = `${windowHeight}px`;
+        });
     })
 });
 
@@ -37,14 +42,9 @@ sendMessageButtons.forEach((sendMessageButton) => {
 
     sendMessageButton.addEventListener('click', () => {
 
-        console.log("입력한 버튼 : " + sendMessageButton.id); // send_button1
         const number = sendMessageButton.getAttribute('id').replace('send_button', ''); // 1
-        console.log("입력한 버튼의 숫자 : " + number);
-        let chatMessagesContainer = document.getElementById(`chatMessages` + number);
-        console.log("입력한 채팅방 : " + chatMessagesContainer.id);
         const messageInput = document.getElementById(`l_message_input` + number);
         const messageText = messageInput.value;
-        console.log("입력값 : " + messageText + " / 채팅칸 : " + messageInput.id);
         const chatTitle = document.getElementById(`movieTitle` + number).value;
         console.log("채팅방 영화 : " + chatTitle);
 
@@ -68,34 +68,52 @@ sendMessageButtons.forEach((sendMessageButton) => {
 });
 
 // 스냅샷 리스너 (채팅이 추가되는지 듣고있음)
+let unsubscribeSnapshotListener;  // 변수 추가
+
 function snapshotListener(chatMessagesContainer, chatTitle) {
-    db.collection(chatTitle)
+    console.log("걍 얘가 실행됨");
+
+    // 이전에 등록된 스냅샷 리스너 해제
+    if (unsubscribeSnapshotListener) {
+        unsubscribeSnapshotListener();
+    }
+
+    // 새로운 스냅샷 리스너 등록
+    unsubscribeSnapshotListener = db.collection(chatTitle)
         .orderBy("timestamp")
         .onSnapshot((snapshot) => {
             console.log("스냅샷 실행");
+            console.log("스냅샷 갯수 : " + snapshot.docChanges().length);
             snapshot.docChanges().forEach((change) => {
                 console.log("스냅샷 들어와서 실행");
                 if (change.type === "added") {
                     const messageData = change.doc.data();
+
                     const messageContainer = addMessage(messageData.id, messageData.message, messageData.timestamp);
                     console.log("메세지 컨테이너들 : " + messageData.message);
-                    chatMessagesContainer.insertBefore(messageContainer, chatMessagesContainer.lastChild);
+                    chatMessagesContainer.appendChild(messageContainer);
                     chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
-                }
+                    }
             });
         });
 }
 
-// 스냅샷 리스너 (채팅이 추가되는지 듣고있음)
-function addSnapshot(chatMessagesContainer, messageText) {
-    const messageContainer = addMessage(messageText.id, messageText.message, messageText.timestamp);
-    console.log("메세지 컨테이너들 : " + messageData.message);
-    chatMessagesContainer.insertBefore(messageContainer, chatMessagesContainer.lastChild);
-    chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
-}
-
 
 function addMessage(name, message, time) {
+
+    const chatContainer = document.createElement('div');
+    chatContainer.classList.add('l_chat_container');
+
+    const profileContainer = document.createElement('div');
+    profileContainer.classList.add('l_participant_in_user');
+    profileContainer.classList.add('d-flex');
+    profileContainer.classList.add('align-items-center');
+
+    const profile = document.createElement('img');
+    profile.src = "https://dummyimage.com/100/000/fff.jpg";
+
+    const username = document.createElement('span');
+
     const messageContainer = document.createElement('div');
     messageContainer.classList.add('l_message_container');
 
@@ -113,11 +131,18 @@ function addMessage(name, message, time) {
     timeElement.classList.add('l_message_time');
     timeElement.textContent = time;
 
+
+    profileContainer.appendChild(profile);
+    profileContainer.appendChild(username);
+
     messageContainer.appendChild(nameElement);
     messageContainer.appendChild(textElement);
     messageContainer.appendChild(timeElement);
 
-    return messageContainer;
+    chatContainer.appendChild(profileContainer);
+    chatContainer.appendChild(messageContainer);
+
+    return chatContainer;
 }
 
 
