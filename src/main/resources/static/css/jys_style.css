@@ -1,0 +1,262 @@
+@import url(common.css);
+
+.j_header {
+    white-space: nowrap; /* 글자가 넘칠 경우 줄바꿈 방지 */
+    overflow: hidden;
+}
+
+.j_nav {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+
+}
+
+.j_nav_left {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: start;
+}
+
+.j_logo {
+    padding-left: 20px;
+    width: 100px;
+    height: 75px;
+}
+
+#j_logo {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 5px;
+}
+
+.j_logo_text {
+    padding-right: 50px;
+    font-size: xx-large;
+    color: var(--primary_01);
+}
+
+.j_logo_text_padding {
+    padding-top: 25px;
+}
+
+.j_nav_menu_ul{
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    grid-gap: 60px;
+    list-style-type: none;
+    padding-top: 30px;
+}
+
+.j_nav_menu_ul a {
+    text-decoration: none;
+    color: black;
+    font-size: larger;
+    font-weight: 600;
+}
+
+.j_nav_right {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 30px;
+    padding-top: 20px;
+    padding-right: 25px;
+}
+
+.j_nav_menu_thin_ul {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 30px;
+    list-style-type: none;
+    padding-right: 25px;
+    padding-top: 15px;
+}
+
+.j_nav_menu_thin_ul a {
+    text-decoration: none;
+    color: black;
+    font-weight: 400;
+}
+
+.j_text_area:focus{
+    border-color : initial;
+    outline: none;
+}
+
+.j_text_area:focus::placeholder {
+    color: transparent;
+}
+
+.j_search_area {
+    display: grid;
+    grid-template-columns: 7fr 1fr;
+    justify-content: space-between;
+    margin: 0px 0px;
+    width: 400px;
+    height: 40px;
+    border: 2px solid #8AF9CD;
+    border-radius: 4px;
+}
+
+.j_text_area {
+    margin-left: 10px;
+    border: none;
+    max-width: 70%;
+}
+
+.j_search_magnifier {
+    margin: 0px;
+    cursor: pointer;
+    border : none;
+    background-color: white;
+
+}
+
+.j_search_magnifier img {
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+    horiz-align: center;
+}
+
+.j_footer_background {
+    width: 100%;
+    height: 200px;
+    background-color: gainsboro;
+}
+
+.j_footer_ul {
+    line-height: 22px;
+    font-size: 14px;
+    margin: 0 0 10px 0;
+    text-align: center;
+}
+
+.j_footer_img {
+    display: flex;
+    justify-content: center;
+    padding-top: 12px;
+}
+
+.j_footer_logo_text{
+    display: flex;
+    justify-content: center;
+    margin: 4px 0 10px;
+}
+
+.j_footer {
+    bottom: 0;
+    width: 100%;
+}
+
+/* 헤더 드랍 다운 메뉴 CSS */
+
+.j_navi > ul > li > ul {
+    position: absolute;
+    left: 0;
+    top: 60px;
+    z-index: 1000;
+    background-color: var(--point_01);
+    width: 100%;
+    text-align: center;
+    display: none;
+
+}
+
+.j_submenu > li {
+    display: inline-block;
+    font-size: smaller;
+    margin-right: 40px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+}
+
+.j_custom_margin30 {
+    margin-right: 30px;
+}
+
+.j_custom_modal {
+    display: none; /* 모달 초기에는 숨김 상태 */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    width: 90%;
+    height: 90%;
+}
+
+.j_custom_close {
+    width: 10%;
+}
+
+.j_register_container2 {
+    /* background-color: antiquewhite; */
+    position: relative;
+    width: 1200px;
+    height: 640px;
+    top: 60px;
+    left: 420px;
+}
+
+.j_register_container2 .j_section1{
+    /* background-color: #01DFD7; */
+    height: 50%;
+}
+
+.j_custom_margin_bottom {
+    margin-bottom: 20px;
+}
+
+.j_register_container2 button{
+    background-color: #01DFD7;
+    border: none;
+    border-radius: 5px;
+    width: 120px;
+    height: 30px;
+    text-decoration: none;
+    transition-duration: 0.5s;
+    margin-bottom: 15px;
+    margin-left:15px;
+}
+
+.j_custom_margin_modal {
+    margin-left:15px;
+}
+
+.j_close{
+    top: 20%;
+    position: absolute;
+    right: 3%;
+    width: 70px;
+    height: 30px;
+    border-radius: 10px;
+    border: none;
+    background-color: #01DFD7;
+}
+
+.j_close2{
+    top: 24%;
+    position: absolute;
+    right: 3%;
+    width: 70px;
+    height: 30px;
+    border-radius: 10px;
+    border: none;
+    background-color: var(--primary_02);
+}
+
+.j_register_bottom{
+    position: absolute;
+    bottom: 5%;
+    left: 45%;
+}
+
+.j_custom_display {
+    display: none;
+}

@@ -13,9 +13,6 @@ import java.io.IOException;
 @Controller
 public class PortController {
 
-    @Autowired
-    private PortService portService;
-
     // 환불 버튼
     @GetMapping("/refund")
     public String refundPage(){

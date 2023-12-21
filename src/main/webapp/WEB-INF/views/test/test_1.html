@@ -6,7 +6,26 @@
 </head>
 <body>
 
-<img src="https://indieground.kr/movieImgFolder/d3d9d77a-2c0b-4c39-a30a-80c6c1a0c671_jpg">
+<div>
+</div>
 
+<script>
+
+    let testWord = [
+    {username: 'aaaaa', password: 1234}, {username: 'aaaaa', password: 1234}, {username: 'bbbbb', password: 1111}, {username: 'bbbbb', password: 1111},
+        {username: 'ccccc', password: 1255}, {username: 'ccccc', password: 1255}
+    ];
+
+    let newWord = [];
+    testWord.forEach((word) => {
+        if (!newWord.some(item => item.username === word.username && item.password === word.password)) {
+            newWord.push(word);
+        }
+    })
+
+    newWord.forEach((include) => {
+        console.log(include);
+    })
+</script>
 </body>
 </html>
