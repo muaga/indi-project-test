@@ -1,14 +1,20 @@
 package com.example.project_indi_test.controller;
 
+import com.example.project_indi_test.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class TestController {
+
+    @Autowired
+    private HttpSession session;
 
     @GetMapping("/")
     public String test(Model model){
@@ -33,6 +39,28 @@ public class TestController {
 
         return "test/test";
     }
+
+    @GetMapping("/a-page")
+    public String aPage(){
+        User user = new User();
+        user.setUsername("hello");
+
+        session.setAttribute("sessionUser", user);
+        return "test/a_page";
+    }
+
+    @GetMapping("/b-page")
+    public String bPage(Model model){
+        User user = User.builder()
+                .username("ssar")
+                .build();
+
+        model.addAttribute("user", user);
+
+        return "test/b_page";
+    }
+
+
 
     @GetMapping("/select-movie-day")
     public String selectMovieDay(){

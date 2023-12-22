@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <button id="openButton" style="padding: 10px; background-color: #7f7f7f; display: none">지정된 시간만 나오는 버튼</button>
+    <div id="text"></div>
+</div>
+<script>
+
+    // db에 들어간 데이터
+    let startString = '2023-12-22 17:41:00'
+    let lastString = '2023-12-22 18:05:00'
+
+    // 데이터 타입으로 변경
+    let startDate = new Date(startString);
+    let lastDate = new Date(lastString);
+
+    console.log("업데이투" + startDate);
+    // Fri Dec 22 2023 17:41:00 GMT+0900
+    console.log("업데이투" + lastDate);
+    // Fri Dec 22 2023 18:05:00 GMT+0900
+
+    //---------------------------------------
+
+    let first = new Date(startString).getTime();
+    // timestamp로 가져온다는 가정하에
+    let updatedFirstDate = new Date(first + 2 * 60 * 60 * 1000);
+    // timestamp에 2시간을 더한 후 Date 객체로 변환
+
+    console.log("업데이투" + updatedFirstDate);
+    // Fri Dec 22 2023 19:41:00 GMT+0900
+
+    // 현재시간
+    let currentDate = new Date();
+
+    // 영향을 줄 요소
+    let button = document.getElementById('openButton');
+    let text = document.getElementById('text');
+
+
+    if(currentDate >= startDate && currentDate <= lastDate){
+        button.style.display = 'block';
+        text.innerHTML = "적정한 시간임";
+    }else {
+        button.style.display = 'none';
+        text.innerHTML = "시간 범위를 벗어남";
+    }
+
+</script>
+</body>
+</html>
