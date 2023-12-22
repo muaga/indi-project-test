@@ -27,21 +27,19 @@
 <script>
     // 1. 객체 초기화
     // let IMP = window.IMP;
-    IMP.init('imp 키') // 예: 'imp00000000a'
+    IMP.init('imp81816223') // 예: 'imp00000000a'
 
     // 카카오 페이 결제 요청
     function KakaoPay() {
         IMP.request_pay({
             pg: "kakaopay.TC0ONETIME", // 상점CID
             pay_method: "card", // 생략가
-            merchant_uid: "order_no_0016", // 상점에서 생성한 고유 주문번호
+            merchant_uid: "order_no_0017", // 상점에서 생성한 고유 주문번호
             name: "영화표",
             amount: 8000,
             buyer_email: "test@portone.io",
             buyer_name: "남은혜",
             buyer_tel: "010-1234-5678",
-            buyer_addr: "서울특별시 강남구 삼성동",
-            buyer_postcode: "123-456",
             m_redirect_url: "localhost:80/select-movie-day"
         }, function (rsp) { // callback 로직
             //rsp.imp_uid 값으로 결제 단건조회 API를 호출하여 결제결과를 판단합니다. -> 결제 성공 또는 실패시 결과값

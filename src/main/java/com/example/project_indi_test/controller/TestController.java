@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -105,4 +106,13 @@ public class TestController {
     public String selectSeat(){
         return "reservation/select_seat";
     }
+////////////////////////////////////////////////////////////////////////////////////
+
+    // 온라인 결제 화면 요청(GET)
+    @GetMapping("/{movieId}/on")
+    public String onPayment(@PathVariable Integer movieId, Model model){
+        return "payment/on_payment";
+    }
+
 }
+

@@ -486,13 +486,15 @@
     display: none;
 }
 
-
 .l_chatbar {
-    position: fixed; 
-    bottom: 0; 
-    left: 50%;
-    transform: translateX(-50%); 
-    width: 60%; 
+    width: 68.8%;
+    position: fixed;
+    left: 0;
+    transform: translate(22%);
+    bottom: 0;
+    padding: 30px;
+    background-color: white;
+    height: 100px;
 }
 
 .l_participants_list { 
@@ -567,10 +569,14 @@
     align-items: center;
 }
 
+.l_input_chat {
+    height: 50px;
+}
+
 .l_chat_message_box{
     width: 83%;
     padding: 10px;
-    overflow: scroll;
+    /*overflow: scroll;*/
 }
 
 .l_chat_message_box ::-webkit-scrollbar {
@@ -584,6 +590,17 @@
 
 .l_chat_message_box ::-webkit-scrollbar-track {
     background-color: #f1f1f1; 
+}
+
+.l_chat_messages {
+    height: 80%;
+    overflow-y: scroll;
+}
+
+.l_send_message_button {
+    border: 0.5px solid var(--line_01);
+    width: 50px;
+    border-radius: 0 5px 5px 0;
 }
 
 .l_message_container {
