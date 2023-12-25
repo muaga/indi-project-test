@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<input id="name" value="">
+
+
+<script>
+    const beforeUnloadListener = (event) => {
+        event.preventDefault();
+        return (event.returnValue = "");
+    };
+    const nameInput = document.querySelector("#name");
+    nameInput.addEventListener("input", (event) => {
+        if (event.target.value !== "") {
+            addEventListener("beforeunload", beforeUnloadListener, { capture: true });
+        } else {
+            removeEventListener("beforeunload", beforeUnloadListener, {
+                capture: true,
+            });
+        }
+    });
+
+</script>
+</body>
+</html>
