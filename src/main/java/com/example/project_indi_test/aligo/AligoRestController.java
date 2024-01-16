@@ -1,12 +1,11 @@
-package com.example.project_indi_test.port_one;
+package com.example.project_indi_test.aligo;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
@@ -14,24 +13,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-public class PortOneRefund {
+public class AligoRestController {
 
-//    @Value("${imp.rest-api.key}")
-    private String apiKey;
+    public String apikey = "NCSFAD4KUN7NXV2H";
 
-//    @Value("${imp.rest-api.secret-key}")
-    private String secretKey;
+    public String secretKey = "as";
 
-    // 환불요청하는 메소드
-    // http://localhost:8080/wantRefund
-    @PostMapping("/wantRefund")
+    public String userId = "nammmmu";
+
+    public String sender = "01057600075";
+
+    @PostMapping("/invite")
     @ResponseBody
-    public ResponseEntity<Map<String, String>> wantRefund(@RequestBody Map<String, Object> requestBody) {
+    public ResponseEntity<Map<String, String>> inviteSms(@RequestBody Map<String, Object> requestBody) {
         try {
-            // 클라이언트로부터 받은 주문번호, 환불사유, 환불금액
-            String merchantUid = (String) requestBody.get("merchant_uid");
-            String reason = (String) requestBody.get("reason");
-            String cancelRequestAmountString = requestBody.get("cancel_request_amount").toString();
+            // 클라이언트로부터 받은 유저, 메세지 내용
+            String receiver = (String) requestBody.get("receiver");
+            String msg = (String) requestBody.get("msg");
+            String testmodeYn = "Y";
 
             // * 액세스 토큰 요청 ---> Server to Server
             RestTemplate rt1 = new RestTemplate();
@@ -39,19 +38,20 @@ public class PortOneRefund {
             // 헤더 구성
             HttpHeaders headers1 = new HttpHeaders();
             headers1.add("Content-Type", "application/json;charset=UTF-8");
-            headers1.add("Authorization", "token"); // 토큰 들어가야 함
+            headers1.add("Authorization", "HMAC-SHA256 apiKey=NCSAYU7YDBXYORXC, date=2019-07-01T00:41:48Z, salt=jqsba2jxjnrjor, signature=1779eac71a24cbeeadfa7263cb84b7ea0af1714f5c0270aa30ffd34600e363b4");
 
             // 바디 구성
             HashMap<String, String> params1 = new HashMap<>();
-            params1.put("reason", reason);
-            params1.put("merchant_uid", merchantUid); // 이 부분에서 imp_uid를 어떻게 획득하는지 확인이 필요합니다.
-            params1.put("amount", cancelRequestAmountString);
+            params1.put("receiver", receiver);
+            params1.put("sender", sender);
+            params1.put("msg", msg); // 이 부분에서 imp_uid를 어떻게 획득하는지 확인이 필요합니다.
+            params1.put("testmode_yn", testmodeYn);
 
             // 헤더 + 바디 결합 => HTTP MSG 완성
             HttpEntity<HashMap<String, String>> requestMsg1 = new HttpEntity<>(params1, headers1);
 
             // 요청 처리 - ResponseEntity로 응답이 된다.
-            ResponseEntity<String> response1 = rt1.exchange("https://api.iamport.kr/payments/cancel", HttpMethod.POST, requestMsg1, String.class);
+            ResponseEntity<String> response1 = rt1.exchange("https://api.coolsms.co.kr/messages/v4/send", HttpMethod.POST, requestMsg1, String.class);
 
             System.out.println("============================");
             System.out.println("응답응답 : " + response1.getBody());
@@ -67,5 +67,3 @@ public class PortOneRefund {
         }
     }
 }
-
-

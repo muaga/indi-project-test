@@ -34,6 +34,10 @@ dependencies {
     // 결제
     implementation 'com.github.iamport:iamport-rest-client-java:0.1.6'
 
+    // 문자
+    implementation 'net.nurigo:sdk:4.2.7'
+
+
 
 
 }

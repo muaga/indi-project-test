@@ -17,10 +17,10 @@ import java.util.HashMap;
 @Controller
 public class PortOneToken {
 
-    @Value("${imp.rest-api.key}")
+//    @Value("${imp.rest-api.key}")
     private String apiKey;
 
-    @Value("${imp.rest-api.secret-key}")
+//    @Value("${imp.rest-api.secret-key}")
     private String secretKey;
 
 

@@ -61,8 +61,6 @@ public class TestController {
         return "test/b_page";
     }
 
-
-
     @GetMapping("/select-movie-day")
     public String selectMovieDay(){
 
