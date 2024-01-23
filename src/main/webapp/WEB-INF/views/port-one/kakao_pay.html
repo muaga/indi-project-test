@@ -27,14 +27,14 @@
 <script>
     // 1. 객체 초기화
     // let IMP = window.IMP;
-    IMP.init('imp81816223') // 예: 'imp00000000a'
+    IMP.init('imp51536650') // 예: 'imp00000000a'
 
     // 카카오 페이 결제 요청
     function KakaoPay() {
         IMP.request_pay({
             pg: "kakaopay.TC0ONETIME", // 상점CID
             pay_method: "card", // 생략가
-            merchant_uid: "order_no_0017", // 상점에서 생성한 고유 주문번호
+            merchant_uid: "order_no_0015", // 상점에서 생성한 고유 주문번호
             name: "영화표",
             amount: 8000,
             buyer_email: "test@portone.io",
